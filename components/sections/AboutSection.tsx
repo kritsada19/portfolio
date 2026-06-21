@@ -1,13 +1,16 @@
+"use client";
+
+import { FiCode, FiLayers, FiZap, FiCheckCircle } from "react-icons/fi";
+import { motion } from "framer-motion";
+
 /**
  * AboutSection — เล่าเรื่องราวและจุดแข็งของคุณ
  * 
  * ส่วนนี้เน้นการสร้างความน่าเชื่อถือและความประทับใจ:
- * 1. ใช้ Grid Layout: แบ่งข้อมูลเรื่องราว (Story) และจุดเด่น (Key Highlights) ให้สมดุล
+ * 1. Framer Motion: ใช้ whileInView เพื่อให้ Animation ทำงานเมื่อเลื่อนมาถึงส่วนนี้
  * 2. Glassmorphism Cards: ใช้การ์ดที่มีความโปร่งใสและเงาที่นุ่มนวล
  * 3. Stats Highlight: แสดงตัวเลขสำคัญเพื่อให้เห็นภาพรวมความสำเร็จ
  */
-
-import { FiCode, FiLayers, FiZap, FiCheckCircle } from "react-icons/fi";
 
 /* --- ข้อมูลจุดเด่น (Highlights) ที่ต้องการเน้น --- */
 const HIGHLIGHTS = [
@@ -35,7 +38,22 @@ export default function AboutSection() {
       id="about"
       className="py-32 bg-white dark:bg-slate-950 scroll-mt-20 relative overflow-hidden"
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+      {/* 
+        ============================================================
+        Animation Explanation:
+        ใช้ `whileInView` เพื่อให้เนื้อหาแสดงผลเมื่อผู้ใช้เลื่อนลงมาถึง
+        - initial: เริ่มต้นที่โปร่งใสและเลื่อนลงเล็กน้อย
+        - whileInView: ปรากฏขึ้นเมื่ออยู่ในหน้าจอ
+        - viewport: ตั้งค่า { once: true } เพื่อให้เล่นรอบเดียวต่อการโหลด
+        ============================================================
+      */}
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8 }}
+        className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10"
+      >
         {/* ==========================================
             Section Header - หัวข้อส่วนเกี่ยวกับผม
             ========================================== */}
@@ -59,7 +77,6 @@ export default function AboutSection() {
           {/* --- ฝั่งซ้าย: เนื้อหาบรรยาย (Story) --- */}
           <div className="lg:col-span-7 space-y-8">
             <div className="relative">
-              {/* ตกแต่งเส้นข้างหัวข้อเพื่อความพรีเมียม */}
               <div className="absolute -left-6 top-0 bottom-0 w-1.5 bg-linear-to-b from-emerald-500 to-transparent rounded-full hidden sm:block opacity-60" />
               <h3 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white leading-tight">
                 Learning, building, and growing <br />
@@ -79,7 +96,6 @@ export default function AboutSection() {
               </p>
             </div>
 
-            {/* ส่วนของรายการแบบ Check list สำหรับจุดเด่นเพิ่มเติม */}
             <div className="grid sm:grid-cols-2 gap-4">
               {["Always eager to learn", "Client-centric approach", "Disciplined work ethic", "Committed to deadlines"].map((item) => (
                 <div key={item} className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
@@ -89,7 +105,6 @@ export default function AboutSection() {
               ))}
             </div>
 
-            {/* --- แสดงตัวเลขสถิติ (Stats Block) --- */}
             <div className="pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-wrap gap-12">
               {STATS.map(({ value, label }) => (
                 <div key={label} className="flex flex-col">
@@ -102,12 +117,15 @@ export default function AboutSection() {
 
           {/* --- ฝั่งขวา: การ์ดไฮไลท์ (Highlight Cards) --- */}
           <div className="lg:col-span-5 space-y-6">
-            {HIGHLIGHTS.map(({ icon: Icon, title, desc }) => (
-              <div
+            {HIGHLIGHTS.map(({ icon: Icon, title, desc }, idx) => (
+              <motion.div
                 key={title}
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 + idx * 0.1 }}
                 className="group glass-card hover-lift p-8 rounded-3xl relative overflow-hidden"
               >
-                {/* แสงเรืองรองจาง ๆ ที่จะเข้มขึ้นเมื่อ Hover */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 group-hover:bg-emerald-500/10 rounded-full -mr-16 -mt-16 blur-2xl transition-colors duration-500" />
 
                 <div className="relative z-10 flex gap-6">
@@ -123,11 +141,12 @@ export default function AboutSection() {
                     </p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
+

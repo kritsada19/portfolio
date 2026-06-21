@@ -1,13 +1,16 @@
+"use client";
+
+import { FiGithub, FiExternalLink, FiFolder } from "react-icons/fi";
+import { motion } from "framer-motion";
+
 /**
  * ProjectsSection — พื้นที่จัดแสดงความสำเร็จ (Gallery of Work)
  * 
  * ส่วนนี้ถูกออกแบบให้ดูพรีเมียมและน่าสนใจ:
- * 1. Project Grid: การจัดวางที่เว้นช่องไฟอย่างเหมาะสม
- * 2. Visual Hierarchy: เน้นชื่อโปรเจกต์และ Tech Stack ให้ชัดเจน
- * 3. Gradient Accent: ใช้สีที่แตกต่างกันในแต่ละโปรเจกต์เพื่อเพิ่มลูกเล่น
+ * 1. Framer Motion: ใช้ whileInView เพื่อให้โปรเจกต์ค่อยๆ เลื่อนขึ้นมาเมื่อเราเลื่อนหน้าจอ
+ * 2. Project Grid: การจัดวางที่เว้นช่องไฟอย่างเหมาะสม
+ * 3. Gradient Accent: ใช้สีที่แตกต่างกันในแต่ละโปรเจกต์
  */
-
-import { FiGithub, FiExternalLink, FiFolder } from "react-icons/fi";
 
 /* --- ข้อมูลรายการผลงานโปรเจกต์ --- */
 const PROJECTS = [
@@ -40,11 +43,20 @@ export default function ProjectsSection() {
       id="projects"
       className="py-32 bg-white dark:bg-slate-950 scroll-mt-20 overflow-hidden"
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-
-        {/* ==========================================
-            Section Header - หัวข้อส่วนผลงาน
-            ========================================== */}
+      {/* 
+        ============================================================
+        Animation Explanation:
+        ใช้ `whileInView` ร่วมกับ `staggerChildren` (ผ่านการหน่วงเวลา delay)
+        เพื่อให้โปรเจกต์แต่ละอันแสดงผลตามลำดับอย่างสวยงาม
+        ============================================================
+      */}
+      <motion.div 
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8 }}
+        className="max-w-6xl mx-auto px-4 sm:px-6"
+      >
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
           <div>
             <span className="text-emerald-500 font-bold uppercase tracking-widest text-sm mb-4 block">
@@ -59,18 +71,17 @@ export default function ProjectsSection() {
           </p>
         </div>
 
-        {/* ==========================================
-            Projects Grid
-            ========================================== */}
         <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
-          {PROJECTS.map((project) => (
-            <div
+          {PROJECTS.map((project, idx) => (
+            <motion.div
               key={project.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 + idx * 0.1 }}
               className="group relative flex flex-col glass-card p-1 rounded-[2.5rem] transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/10"
             >
               <div className="bg-white dark:bg-slate-900/50 rounded-[2.3rem] p-8 sm:p-10 flex flex-col h-full border border-slate-100 dark:border-slate-800 transition-colors group-hover:bg-slate-50 dark:group-hover:bg-slate-800/40">
-
-                {/* แถวบน: ไอคอนโฟลเดอร์และลิงก์ภายนอก */}
                 <div className="flex justify-between items-start mb-10">
                   <div className={`w-14 h-14 rounded-2xl bg-linear-to-br ${project.gradient} flex items-center justify-center text-white shadow-lg shadow-emerald-500/20`}>
                     <FiFolder className="w-6 h-6" />
@@ -85,7 +96,6 @@ export default function ProjectsSection() {
                   </div>
                 </div>
 
-                {/* ชื่อโปรเจกต์และคำบรรยาย */}
                 <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                   {project.title}
                 </h3>
@@ -93,7 +103,6 @@ export default function ProjectsSection() {
                   {project.desc}
                 </p>
 
-                {/* รายการ Tech Stack ที่ใช้ในโปรเจกต์นั้น ๆ */}
                 <div className="flex flex-wrap gap-2">
                   {project.techs.map((tech) => (
                     <span
@@ -105,11 +114,10 @@ export default function ProjectsSection() {
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        {/* ปุ่มลิงก์ไปยัง GitHub หลัก */}
         <div className="mt-24 text-center">
           <a
             href="https://github.com/kritsada19"
@@ -120,7 +128,8 @@ export default function ProjectsSection() {
             Explore More on GitHub
           </a>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
+

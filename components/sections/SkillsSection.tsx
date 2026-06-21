@@ -1,11 +1,4 @@
-/**
- * SkillsSection — คลังแสงทางเทคโนโลยี (Technical Toolbox)
- * 
- * ส่วนนี้แสดงทักษะความชำนาญของคุณโดยแบ่งหมวดหมู่ชัดเจน:
- * 1. หมวดหมู่ (Categories): แยกกลุ่ม Frontend, Backend และ Tools เพื่อให้หาได้ง่าย
- * 2. ระดับความชำนาญ (Skill Levels): ใช้ Badge สีที่แตกต่างกันเพื่อบอกระดับความเชี่ยวชาญ
- * 3. Interaction: เมื่อเอาเมาส์ไปชี้ที่การ์ด จะมีเอฟเฟกต์ยกตัว (Hover-lift)
- */
+"use client";
 
 import {
   SiReact,
@@ -26,6 +19,16 @@ import {
   SiRedis,
   SiGithubactions,
 } from "react-icons/si";
+import { motion } from "framer-motion";
+
+/**
+ * SkillsSection — คลังแสงทางเทคโนโลยี (Technical Toolbox)
+ * 
+ * ส่วนนี้แสดงทักษะความชำนาญของคุณโดยแบ่งหมวดหมู่ชัดเจน:
+ * 1. Framer Motion: ใช้ staggering effect เพื่อให้การ์ดทักษะค่อยๆ ปรากฏทีละใบ
+ * 2. หมวดหมู่ (Categories): แยกกลุ่ม Frontend, Backend และ Tools เพื่อให้หาได้ง่าย
+ * 3. ระดับความชำนาญ (Skill Levels): ใช้ Badge บอกระดับความเชี่ยวชาญ
+ */
 
 /* --- กำหนดระดับความชำนาญและสไตล์ของ Badge --- */
 type SkillLevel = "Basic" | "Intermediate" | "Advanced";
@@ -53,7 +56,6 @@ const SKILL_CATEGORIES = [
       { name: "HTML5 & CSS3", icon: SiHtml5, level: "Advanced" as const },
     ],
   },
-
   {
     title: "Backend & Database",
     desc: "APIs, authentication, databases, and server-side development",
@@ -67,7 +69,6 @@ const SKILL_CATEGORIES = [
       { name: "Redis", icon: SiRedis, level: "Basic" as const },
     ],
   },
-
   {
     title: "DevOps & Tools",
     desc: "Deployment, containerization, and development workflow",
@@ -87,10 +88,20 @@ export default function SkillsSection() {
       className="py-32 bg-slate-50 dark:bg-slate-900/30 scroll-mt-20 relative"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        {/* ==========================================
-            Section Header - หัวข้อส่วนทักษะ
-            ========================================== */}
-        <div className="text-center mb-20">
+        {/* 
+          ============================================================
+          Animation Explanation:
+          ใช้อนิเมชั่นแบบเลื่อนขึ้น (Slide Up) สำหรับหัวข้อ 
+          เพื่อให้ผู้ใช้เห็นภาพรวมก่อนที่รายละเอียดทักษะจะค่อยๆ ปรากฏ
+          ============================================================
+        */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-20"
+        >
           <span className="text-emerald-500 font-bold uppercase tracking-widest text-sm mb-4 block">
             Technical Expertise
           </span>
@@ -100,18 +111,21 @@ export default function SkillsSection() {
           <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-lg font-light">
             The tools and languages I choose to build efficient and practical solutions for projects.
           </p>
-        </div>
+        </motion.div>
 
         {/* ==========================================
             Skills Categories Grid
             ========================================== */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {SKILL_CATEGORIES.map((category) => (
-            <div
+          {SKILL_CATEGORIES.map((category, idx) => (
+            <motion.div
               key={category.title}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
               className="group glass-card p-8 rounded-3xl hover-lift border-b-4 border-b-transparent hover:border-b-emerald-500 transition-all duration-300"
             >
-              {/* รายละเอียดหมวดหมู่ */}
               <div className="mb-8">
                 <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">
                   {category.title}
@@ -121,7 +135,6 @@ export default function SkillsSection() {
                 </p>
               </div>
 
-              {/* รายการ Skill Pills */}
               <div className="flex flex-col gap-4">
                 {category.skills.map(({ name, icon: Icon, level }) => (
                   <div
@@ -137,7 +150,6 @@ export default function SkillsSection() {
                       </span>
                     </div>
 
-                    {/* Level Badge: แสดงระดับความชำนาญ */}
                     <span
                       className={`text-[10px] font-bold uppercase tracking-tighter px-2 py-0.5 rounded-md ${LEVEL_STYLES[level]}`}
                     >
@@ -146,16 +158,21 @@ export default function SkillsSection() {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        {/* ข้อความทิ้งท้ายส่วนทักษะ */}
-        <div className="mt-16 text-center">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+          className="mt-16 text-center"
+        >
           <p className="text-slate-500 dark:text-slate-500 text-sm">
             I am always learning new technologies...
           </p>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
