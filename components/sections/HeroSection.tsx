@@ -39,7 +39,7 @@ export default function HeroSection() {
         - transition: ควบคุมความเร็วและระยะเวลา (0.8 วินาที พร้อม easeOut)
         ============================================================
       */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}

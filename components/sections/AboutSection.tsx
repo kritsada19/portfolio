@@ -47,7 +47,7 @@ export default function AboutSection() {
         - viewport: ตั้งค่า { once: true } เพื่อให้เล่นรอบเดียวต่อการโหลด
         ============================================================
       */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}

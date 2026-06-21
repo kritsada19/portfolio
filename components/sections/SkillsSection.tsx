@@ -95,7 +95,7 @@ export default function SkillsSection() {
           เพื่อให้ผู้ใช้เห็นภาพรวมก่อนที่รายละเอียดทักษะจะค่อยๆ ปรากฏ
           ============================================================
         */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -162,7 +162,7 @@ export default function SkillsSection() {
           ))}
         </div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
