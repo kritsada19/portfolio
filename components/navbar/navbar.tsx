@@ -1,3 +1,12 @@
+/**
+ * Navbar — แถบนำทางหลัก (Navigation Hub)
+ * 
+ * ส่วนนี้มีความซับซ้อนในการจัดการสถานะ:
+ * 1. Scroll Effect: เปลี่ยนสไตล์เมื่อผู้ใช้เริ่มเลื่อนหน้าจอลงมา (เช่น เพิ่มเงา)
+ * 2. Active Tracking: ระบุว่าผู้ใช้กำลังอยู่ที่ส่วนไหนของหน้า (About, Skills, ฯลฯ)
+ * 3. Responsive Menu: จัดการการแสดงผลเมนูบนมือถือให้สวยงาม
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -6,6 +15,7 @@ import { CiMenuBurger } from "react-icons/ci";
 import { IoClose } from "react-icons/io5";
 import ThemeToggle from "../theme/ThemeToggle";
 
+/* --- รายการลิงก์ที่จะนำชุดคำนวนไปใช้ในการทำงานของ Navigation --- */
 const NAV_LINKS = [
   { href: "#about", label: "About" },
   { href: "#skills", label: "Skills" },
@@ -18,130 +28,100 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Navbar shadow
+  /* --- ตรวจสอบการเลื่อนหน้าจอเพื่อเริ่มเพิ่ม Scroll Effect (Shadow) --- */
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      setIsScrolled(window.scrollY > 20);
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Active section
+  /* --- ตรวจสอบว่าหน้าจอกำลังแสดงผลหัวข้อไหน (Active Link Highlighter) --- */
   useEffect(() => {
-    const sections = NAV_LINKS.map(({ href }) =>
-      document.querySelector(href)
-    ).filter(Boolean) as Element[];
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(`#${entry.target.id}`);
-          }
-        });
-      },
-      {
-        rootMargin: "-40% 0px -55% 0px",
-      }
+    const sections = NAV_LINKS.map(({ href }) => document.querySelector(href)).filter(Boolean) as Element[];
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(`#${entry.target.id}`);
+        }
+      });
+    }, { rootMargin: "-40% 0px -55% 0px" }
     );
-
     sections.forEach((section) => observer.observe(section));
-
     return () => observer.disconnect();
   }, []);
 
-  // theme is handled by ThemeToggle (next-themes)
-
-  const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
-  };
-
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300
-      bg-white dark:bg-slate-900/80 backdrop-blur-md
-      border-b border-slate-200/60 dark:border-slate-700/60
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 
       ${isScrolled
-          ? "shadow-sm shadow-slate-200/50 dark:shadow-slate-900/50"
-          : ""
+          ? "bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-100 dark:border-slate-900 py-3 shadow-2xl shadow-slate-200/20 dark:shadow-slate-950/20"
+          : "bg-transparent py-5"
         }`}
     >
-      <nav className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
+      <nav className="max-w-6xl mx-auto px-6 flex items-center justify-between">
+
+        {/* --- โลโก้แบรนด์ --- */}
         <Link
           href="#"
-          className="text-xl font-bold bg-linear-to-r from-purple-600 to-indigo-500 bg-clip-text text-transparent shrink-0"
+          className="text-2xl font-black bg-linear-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent tracking-tighter"
         >
           KRITSADA.M
         </Link>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8">
+        {/* --- สถาปัตยกรรมเมนูสำหรับ Desktop --- */}
+        <div className="hidden md:flex items-center gap-10">
           {NAV_LINKS.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
-              className={`relative text-sm font-medium transition-colors duration-200
+              className={`relative text-xs font-bold uppercase tracking-widest transition-all duration-300
               ${activeSection === href
-                  ? "text-purple-600 dark:text-purple-400"
-                  : "text-slate-600 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400"
+                  ? "text-emerald-600 dark:text-emerald-400 scale-105"
+                  : "text-slate-500 dark:text-slate-400 hover:text-emerald-500 dark:hover:text-emerald-300"
                 }
-              after:absolute after:-bottom-0.5 after:left-0 after:h-px after:bg-purple-500
-              after:transition-all after:duration-200
-              ${activeSection === href
-                  ? "after:w-full"
-                  : "after:w-0 hover:after:w-full"
-                }`}
+              `}
             >
               {label}
+              {/* เส้นขีดด้านล่างเมนูที่ Highlight ส่วนที่กำลังดูอยู่ */}
+              <span className={`absolute -bottom-1.5 left-0 h-0.5 bg-emerald-500 transition-all duration-300 
+                ${activeSection === href ? "w-full opacity-100" : "w-0 opacity-0"}`}
+              />
             </Link>
           ))}
 
-          <ThemeToggle />
+          <div className="pl-4 border-l border-slate-200 dark:border-slate-800">
+            <ThemeToggle />
+          </div>
         </div>
 
-        {/* Mobile Buttons */}
-        <div className="flex md:hidden items-center gap-2">
+        {/* --- ระบบเมนูสำหรับ Mobile --- */}
+        <div className="flex md:hidden items-center gap-3">
           <ThemeToggle />
-
           <button
-            onClick={toggleMenu}
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800"
+            aria-label="Toggle Menu"
           >
-            {isMenuOpen ? (
-              <IoClose className="w-5 h-5" />
-            ) : (
-              <CiMenuBurger className="w-5 h-5" />
-            )}
+            {isMenuOpen ? <IoClose className="w-5 h-5" /> : <CiMenuBurger className="w-5 h-5" />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* --- Overlay เมนูบนมือถือ (จะเลื่อนลงมาเมื่อเปิด) --- */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300
-        ${isMenuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
-          }
-        border-t border-slate-200/60 dark:border-slate-700/60
-        bg-white/90 dark:bg-slate-900/90 backdrop-blur-md`}
+        className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out bg-white dark:bg-slate-950 border-b border-slate-100 dark:border-slate-900
+        ${isMenuOpen ? "max-h-screen opacity-100 py-8 shadow-2xl" : "max-h-0 opacity-0"}`}
       >
-        <div className="flex flex-col px-6 py-4 gap-4">
+        <div className="flex flex-col px-10 gap-6">
           {NAV_LINKS.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
               onClick={() => setIsMenuOpen(false)}
-              className={`text-sm font-medium py-1 transition-colors duration-200
-              ${activeSection === href
-                  ? "text-purple-600 dark:text-purple-400"
-                  : "text-slate-600 dark:text-slate-400"
-                }`}
+              className={`text-sm font-bold uppercase tracking-[0.2em] transition-colors
+              ${activeSection === href ? "text-emerald-600 dark:text-emerald-400" : "text-slate-500 dark:text-slate-400"}`}
             >
               {label}
             </Link>

@@ -1,3 +1,101 @@
+/* ==========================================
+   globals.css — หัวใจหลักของดีไซน์ Portfolio
+   ========================================== */
+
 @import "tailwindcss";
 
+/* --- Dark mode variant สำหรับการแสดงผลธีมมืด --- */
 @custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* เพิ่มจังหวะการเคลื่อนไหวแบบห่วงยาง (Spring) ให้กับ Animation */
+  --ease-spring: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================
+   Base Styles & Smooth Scrolling
+   ========================================== */
+html {
+  /* ทำให้การสไลด์ไปยังส่วนต่าง ๆ ของหน้าดูนุ่มนวล */
+  scroll-behavior: smooth;
+  /* ปรับการแสดงผลฟอนต์ให้คมชัด */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================
+   Modern Background Patterns
+   สร้างลวดลายพื้นหลังให้ดูพรีเมียม
+   ========================================== */
+
+/* ลายตาราง (Grid) เบา ๆ สำหรับโหมดสว่าง */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(226, 232, 240, 0.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(226, 232, 240, 0.5) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ลายตารางสำหรับโหมดมืด (ใช้สีเทาเข้ม) */
+:where(.dark, .dark *) .bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(30, 41, 59, 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(30, 41, 59, 0.3) 1px, transparent 1px);
+}
+
+/* มาส์กเพื่อทำให้ขอบของตารางจางลง (Fade edges) */
+.mask-grid {
+  mask-image: radial-gradient(ellipse at center, black, transparent 80%);
+}
+
+/* ==========================================
+   Premium Components
+   ========================================== */
+
+/* ตัวหนังสือไล่เฉดสี (Emerald Green) */
+.gradient-text {
+  background: linear-gradient(135deg, #10b981, #14b8a6, #059669);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+}
+
+/* การ์ดสไตล์กระจกฝ้า (Glassmorphism) */
+.glass-card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+:where(.dark, .dark *) .glass-card {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover effect สำหรับการ์ดเพื่อให้ดูลอยขึ้น */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px -10px rgba(16, 185, 129, 0.15);
+}
+
+/* ==========================================
+   Animations
+   ========================================== */
+
+/* วงแหวนสะท้อนแสงวนรอบ */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
