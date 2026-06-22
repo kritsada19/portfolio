@@ -77,6 +77,9 @@ html.dark {
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  /* Force hardware acceleration to prevent flickering during animations */
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 :where(.dark, .dark *) .glass-card {

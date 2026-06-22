@@ -107,7 +107,7 @@ export default function ContactSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 * idx }}
-                className="group relative p-8 rounded-4xl glass-card hover:border-emerald-500/40 transition-all duration-500 flex flex-col items-center text-center hover:shadow-2xl hover:shadow-emerald-500/10 h-full"
+                className="group relative p-8 rounded-4xl glass-card border-transparent hover:border-emerald-500/40 transition-[box-shadow,border-color] duration-500 flex flex-col items-center text-center hover:shadow-2xl hover:shadow-emerald-500/10 h-full transform-gpu"
               >
                 <div className={`w-16 h-16 rounded-3xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 shadow-sm ${item.color}`}>
                   <item.icon className="w-8 h-8" />

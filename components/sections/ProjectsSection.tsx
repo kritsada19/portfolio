@@ -79,7 +79,7 @@ export default function ProjectsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 + idx * 0.1 }}
-              className="group relative flex flex-col glass-card p-1 rounded-[2.5rem] transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/10"
+              className="group relative flex flex-col glass-card p-1 rounded-[2.5rem] transform-gpu transition-shadow duration-500 hover:shadow-2xl hover:shadow-emerald-500/10"
             >
               <div className="bg-white dark:bg-slate-900/50 rounded-[2.3rem] p-8 sm:p-10 flex flex-col h-full border border-slate-100 dark:border-slate-800 transition-colors group-hover:bg-slate-50 dark:group-hover:bg-slate-800/40">
                 <div className="flex justify-between items-start mb-10">
