@@ -4,8 +4,8 @@
 
 @import "tailwindcss";
 
-/* --- Dark mode variant สำหรับการแสดงผลธีมมืด --- */
-@custom-variant dark (&:where(.dark, .dark *));
+/* --- Dark mode variant สำหรับ Tailwind v4 --- */
+@variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* เพิ่มจังหวะการเคลื่อนไหวแบบห่วงยาง (Spring) ให้กับ Animation */
@@ -21,6 +21,15 @@ html {
   /* ปรับการแสดงผลฟอนต์ให้คมชัด */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  /* ตั้งค่าสีพื้นหลังและสีตัวอักษรตั้งต้นที่รองรับ Dark Mode */
+  background-color: white;
+  color: #0f172a; /* slate-900 */
+}
+
+html.dark {
+  background-color: #020617; /* slate-950 */
+  color: #f8fafc; /* slate-50 */
 }
 
 /* ==========================================
