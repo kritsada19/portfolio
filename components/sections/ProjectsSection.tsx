@@ -18,7 +18,7 @@ const PROJECTS = [
     title: "Failio - AI Startup Analyzer",
     desc: "An AI-powered platform engineered to analyze startup failure patterns, featuring complex revenue modeling and architectural safety guards.",
     techs: ["Next.js", "OpenAI", "Stripe", "PostgreSQL", "TypeScript", "Prisma", "NextAuth", "Redis", "Docker", "Vitest"],
-    links: { github: "https://github.com/kritsada19/failio", live: "#" },
+    links: { github: "https://github.com/kritsada19/failio", live: "https://failio-six.vercel.app/" },
     gradient: "from-emerald-500 to-teal-500",
   },
   {
