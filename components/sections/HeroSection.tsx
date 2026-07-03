@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FiArrowDown } from "react-icons/fi";
+import { FiArrowDown, FiDownload } from "react-icons/fi";
 import { motion } from "framer-motion";
 import TypingRole from "../ui/TypingRole";
 
@@ -72,7 +72,7 @@ export default function HeroSection() {
           Focused on building fast, reliable, and aesthetically pleasing modern web applications.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row flex-wrap items-center gap-4 justify-center">
           <Link
             href="#projects"
             className="group relative inline-flex items-center gap-2 px-8 py-4 rounded-2xl
@@ -82,6 +82,20 @@ export default function HeroSection() {
             View My Projects
             <FiArrowDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
           </Link>
+
+          <a
+            href="/cv.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl
+              bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400
+              font-semibold border border-emerald-200 dark:border-emerald-500/20
+              hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 dark:hover:text-white
+              transition-all duration-300 shadow-sm"
+          >
+            <FiDownload className="w-4 h-4 group-hover:-translate-y-1 transition-transform" />
+            Download CV
+          </a>
 
           <Link
             href="#contact"
